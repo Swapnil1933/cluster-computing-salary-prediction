@@ -1,0 +1,16 @@
+# Java JDK binaries (heavy files)
+jdk17/
+jdk17_extracted/
+*.zip
+*.tar.gz
+
+# Python & Jupyter cache
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# System and logs
+*.log
+.DS_Store
+Thumbs.db

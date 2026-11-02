@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    .kpi { transition: transform 0.2s; }
+    .kpi:hover { transform: translateY(-3px); }
+    .bar-fill { transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+    .bar-row:hover .bar-fill { filter: brightness(1.15); }
+    .bar-row:hover { background: var(--accent); }
+    .tab-btn { cursor: pointer; transition: all 0.15s; border-bottom: 2px solid transparent; }
+    .tab-btn:hover { color: var(--foreground); }
+    .tab-btn.active { border-bottom-color: var(--primary); color: var(--primary); font-weight: 600; }
+    .hist-bar { transition: all 0.2s; border-radius: 3px 3px 0 0; }
+    .hist-bar:hover { filter: brightness(1.2); }
+    .hist-col:hover .hist-label { color: var(--foreground); }
+    svg text { font-family: system-ui, -apple-system, sans-serif; }
+    .donut-slice { transition: transform 0.15s; transform-origin: center; }
+    .donut-slice:hover { transform: scale(1.04); filter: brightness(1.1); }
+    .fade { animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-5 md:p-8">
+
+<!-- Header -->
+<div class="flex items-center gap-3 mb-7">
+  <div class="w-11 h-11 rounded-xl bg-[var(--primary)] flex items-center justify-center shadow-lg">
+    <svg class="w-6 h-6 text-[var(--primary-foreground)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 16l4-8 4 4 5-9"/></svg>
+  </div>
+  <div>
+    <h1 class="text-2xl font-bold text-[var(--foreground)] tracking-tight">Employee Salary Prediction</h1>
+    <p class="text-[var(--muted-foreground)] text-sm">INT315 Cluster Computing · Apache Spark MLlib · 2,500 Records</p>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mb-7">
+  <div class="kpi bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(37,99,235,0.12)">
+        <svg class="w-4 h-4" fill="none" stroke="#2563eb" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <span class="text-xs text-[var(--muted-foreground)] uppercase tracking-wider font-medium">Records</span>
+    </div>
+    <p class="text-2xl font-extrabold text-[var(--foreground)]">2,500</p>
+  </div>
+  <div class="kpi bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(5,150,105,0.12)">
+        <svg class="w-4 h-4" fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <span class="text-xs text-[var(--muted-foreground)] uppercase tracking-wider font-medium">Avg Salary</span>
+    </div>
+    <p class="text-2xl font-extrabold" style="color:#059669">$90,848</p>
+  </div>
+  <div class="kpi bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(124,58,237,0.12)">
+        <svg class="w-4 h-4" fill="none" stroke="#7c3aed" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+      </div>
+      <span class="text-xs text-[var(--muted-foreground)] uppercase tracking-wider font-medium">Range</span>
+    </div>
+    <p class="text-2xl font-extrabold" style="color:#7c3aed">$311K</p>
+    <p class="text-xs text-[var(--muted-foreground)] mt-0.5">$39.7K — $350.5K</p>
+  </div>
+  <div class="kpi bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(5,150,105,0.12)">
+        <svg class="w-4 h-4" fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <span class="text-xs text-[var(--muted-foreground)] uppercase tracking-wider font-medium">R² Score</span>
+    </div>
+    <p class="text-2xl font-extrabold" style="color:#059669">98.89%</p>
+  </div>
+  <div class="kpi bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(220,38,38,0.12)">
+        <svg class="w-4 h-4" fill="none" stroke="#dc2626" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/></svg>
+      </div>
+      <span class="text-xs text-[var(--muted-foreground)] uppercase tracking-wider font-medium">RMSE</span>
+    </div>
+    <p class="text-2xl font-extrabold" style="color:#dc2626">$3,962</p>
+  </div>
+  <div class="kpi bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+    <div class="flex items-center gap-2 mb-2">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(245,158,11,0.12)">
+        <svg class="w-4 h-4" fill="none" stroke="#f59e0b" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+      </div>
+      <span class="text-xs text-[var(--muted-foreground)] uppercase tracking-wider font-medium">Graph Corr</span>
+    </div>
+    <p class="text-2xl font-extrabold" style="color:#f59e0b">0.662</p>
+  </div>
+</div>
+
+<!-- Model Performance -->
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 mb-7 shadow-sm">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="font-semibold text-[var(--foreground)]">Spark MLlib Model Performance</h2>
+    <div class="flex gap-2 flex-wrap">
+      <span class="px-2.5 py-1 rounded-full text-xs font-semibold" style="background:rgba(124,58,237,0.12);color:#7c3aed">Spark 4.3.0</span>
+      <span class="px-2.5 py-1 rounded-full text-xs font-semibold" style="background:rgba(37,99,235,0.12);color:#2563eb">16 Cores</span>
+      <span class="px-2.5 py-1 rounded-full text-xs font-semibold" style="background:rgba(5,150,105,0.12);color:#059669">Linear Regression</span>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div>
+      <p class="text-xs text-[var(--muted-foreground)] mb-1">Mean Squared Error</p>
+      <p class="text-xl font-bold text-[var(--foreground)]">15,694,916</p>
+    </div>
+    <div>
+      <p class="text-xs text-[var(--muted-foreground)] mb-1">Root Mean Squared Error</p>
+      <p class="text-xl font-bold text-[var(--foreground)]">$3,961.68</p>
+    </div>
+    <div>
+      <p class="text-xs text-[var(--muted-foreground)] mb-1">Mean Absolute Error</p>
+      <p class="text-xl font-bold text-[var(--foreground)]">$3,149.60</p>
+    </div>
+    <div>
+      <p class="text-xs text-[var(--muted-foreground)] mb-1">R² Coefficient</p>
+      <div class="w-full bg-[var(--border)] rounded-full h-3 mt-2 mb-2 overflow-hidden">
+        <div class="h-3 rounded-full" style="width:98.89%;background:linear-gradient(90deg,#059669,#34d399)"></div>
+      </div>
+      <p class="text-xl font-bold" style="color:#059669">0.9889 <span class="text-sm font-normal text-[var(--muted-foreground)]">(98.89%)</span></p>
+    </div>
+  </div>
+  <div class="flex gap-4 mt-4 pt-3 border-t border-[var(--border)]">
+    <span class="text-sm text-[var(--muted-foreground)]">🟢 Training Set: <strong class="text-[var(--foreground)]">2,051</strong></span>
+    <span class="text-sm text-[var(--muted-foreground)]">🔵 Testing Set: <strong class="text-[var(--foreground)]">449</strong></span>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="flex gap-1 border-b border-[var(--border)] mb-5 overflow-x-auto" id="tabBar">
+  <button class="tab-btn active px-4 py-2.5 text-sm" data-tab="salary">Salary Distribution</button>
+  <button class="tab-btn px-4 py-2.5 text-sm" data-tab="dept">Departments</button>
+  <button class="tab-btn px-4 py-2.5 text-sm" data-tab="roles">Job Roles</button>
+  <button class="tab-btn px-4 py-2.5 text-sm" data-tab="edu">Education</button>
+  <button class="tab-btn px-4 py-2.5 text-sm" data-tab="exp">Experience</button>
+</div>
+
+<!-- Tab: Salary Distribution -->
+<div id="tab-salary" class="tab-panel fade">
+  <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm">
+    <h3 class="font-semibold text-[var(--foreground)] mb-1">Salary Distribution</h3>
+    <p class="text-xs text-[var(--muted-foreground)] mb-5">Number of employees in each salary bracket</p>
+    <div class="flex items-end gap-1 justify-between" style="height:220px" id="salaryHistogram"></div>
+    <div class="flex gap-1 justify-between mt-2" id="salaryLabels"></div>
+  </div>
+</div>
+
+<!-- Tab: Departments -->
+<div id="tab-dept" class="tab-panel hidden fade">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm">
+      <h3 class="font-semibold text-[var(--foreground)] mb-1">Headcount by Department</h3>
+      <p class="text-xs text-[var(--muted-foreground)] mb-4">Employee distribution</p>
+      <div class="flex justify-center"><svg id="deptDonut" width="280" height="240"></svg></div>
+    </div>
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm">
+      <h3 class="font-semibold text-[var(--foreground)] mb-1">Avg Salary by Department</h3>
+      <p class="text-xs text-[var(--muted-foreground)] mb-4">Mean compensation comparison</p>
+      <div id="deptBars" class="space-y-3 mt-2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab: Job Roles -->
+<div id="tab-roles" class="tab-panel hidden fade">
+  <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm">
+    <h3 class="font-semibold text-[var(--foreground)] mb-1">Average Salary by Job Title</h3>
+    <p class="text-xs text-[var(--muted-foreground)] mb-4">All 13 roles ranked by compensation</p>
+    <div id="roleBars" class="space-y-2.5"></div>
+  </div>
+</div>
+
+<!-- Tab: Education -->
+<div id="tab-edu" class="tab-panel hidden fade">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm">
+      <h3 class="font-semibold text-[var(--foreground)] mb-1">Headcount by Education</h3>
+      <p class="text-xs text-[var(--muted-foreground)] mb-4">Degree distribution</p>
+      <div class="flex justify-center"><svg id="eduDonut" width="280" height="220"></svg></div>
+    </div>
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm">
+      <h3 class="font-semibold text-[var(--foreground)] mb-1">Avg Salary by Education</h3>
+      <p class="text-xs text-[var(--muted-foreground)] mb-4">How degree level impacts pay</p>
+      <div id="eduBars" class="space-y-4 mt-4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab: Experience -->
+<div id="tab-exp" class="tab-panel hidden fade">
+  <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm">
+    <h3 class="font-semibold text-[var(--foreground)] mb-1">Average Salary by Experience</h3>
+    <p class="text-xs text-[var(--muted-foreground)] mb-5">Compensation growth over career years</p>
+    <div id="expBars" class="space-y-2.5"></div>
+  </div>
+</div>
+
+<!-- Roles Table -->
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 mt-7 shadow-sm">
+  <h3 class="font-semibold text-[var(--foreground)] mb-4">Job Roles Ranked by Salary</h3>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-[var(--border)]">
+          <th class="text-left py-2.5 text-[var(--muted-foreground)] font-medium text-xs uppercase tracking-wider">#</th>
+          <th class="text-left py-2.5 text-[var(--muted-foreground)] font-medium text-xs uppercase tracking-wider">Role</th>
+          <th class="text-right py-2.5 text-[var(--muted-foreground)] font-medium text-xs uppercase tracking-wider">Count</th>
+          <th class="text-right py-2.5 text-[var(--muted-foreground)] font-medium text-xs uppercase tracking-wider">Avg Salary</th>
+          <th class="py-2.5 pl-5 text-[var(--muted-foreground)] font-medium text-xs uppercase tracking-wider" style="width:35%"></th>
+        </tr>
+      </thead>
+      <tbody id="rolesTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<p class="text-center text-xs text-[var(--muted-foreground)] mt-6 pb-4">Apache Spark 4.3.0 · local[*] · 16 Cores · INT315 Cluster Computing AT2</p>
+
+<script>
+// ===== DATA =====
+const SALARY_HIST = [{r:"30-50k",c:88},{r:"50-70k",c:705},{r:"70-90k",c:717},{r:"90-110k",c:486},{r:"110-130k",c:190},{r:"130-150k",c:108},{r:"150-170k",c:98},{r:"170-190k",c:61},{r:"190-210k",c:19},{r:"210-230k",c:9},{r:"230-250k",c:4},{r:"250-270k",c:2},{r:"270-290k",c:3},{r:"290-310k",c:4},{r:"310-330k",c:4},{r:"330-350k",c:1}];
+const DEPTS = [{n:"Data & AI",c:1016,s:99113,cl:"#2563eb"},{n:"Engineering",c:933,s:83182,cl:"#059669"},{n:"Management",c:39,s:214718,cl:"#7c3aed"},{n:"Operations",c:93,s:127238,cl:"#f59e0b"},{n:"Quality",c:419,s:68270,cl:"#ef4444"}];
+const EDUS = [{n:"Bachelor",c:1733,s:80925,cl:"#2563eb"},{n:"Master",c:648,s:102241,cl:"#059669"},{n:"PhD",c:119,s:173323,cl:"#7c3aed"}];
+const JOBS = [{t:"Engineering Director",c:15,s:301706},{t:"Lead Engineer",c:22,s:203921},{t:"Cloud Architect",c:7,s:202235},{t:"Senior Data Scientist",c:72,s:171138},{t:"Project Manager",c:24,s:160351},{t:"Senior Software Engineer",c:79,s:151102},{t:"ML Engineer",c:95,s:144257},{t:"DevOps Engineer",c:86,s:121134},{t:"Data Scientist",c:440,s:102238},{t:"Software Engineer",c:422,s:89956},{t:"Data Analyst",c:409,s:72585},{t:"QA Engineer",c:419,s:68270},{t:"Jr. Software Engineer",c:410,s:56645}];
+const EXP = [{b:"0-2 yr",c:334,s:60956},{b:"2-4 yr",c:771,s:72349},{b:"4-6 yr",c:637,s:89809},{b:"6-8 yr",c:509,s:100246},{b:"8-10 yr",c:84,s:151125},{b:"10-12 yr",c:117,s:163878},{b:"12-14 yr",c:16,s:182797},{b:"14-16 yr",c:20,s:218089},{b:"16-18 yr",c:4,s:255957},{b:"18-20 yr",c:1,s:296711},{b:"20+ yr",c:7,s:324467}];
+
+const fmt = v => '$' + Math.round(v).toLocaleString();
+const fmtK = v => '$' + (v >= 1000 ? Math.round(v/1000) + 'k' : v);
+
+// ===== SALARY HISTOGRAM =====
+const histMax = Math.max(...SALARY_HIST.map(d=>d.c));
+const histEl = document.getElementById('salaryHistogram');
+const labelsEl = document.getElementById('salaryLabels');
+SALARY_HIST.forEach((d,i) => {
+  const pct = (d.c / histMax * 100);
+  const t = i / (SALARY_HIST.length - 1);
+  const color = `hsl(${220 + t*15}, ${70 - t*20}%, ${50 + t*10}%)`;
+  const col = document.createElement('div');
+  col.className = 'hist-col flex flex-col items-center flex-1';
+  col.style.height = '100%';
+  col.style.display = 'flex';
+  col.style.alignItems = 'center';
+  col.style.justifyContent = 'flex-end';
+  col.innerHTML = `
+    <span class="text-xs font-semibold text-[var(--foreground)] mb-1" style="opacity:${pct > 8 ? 1 : 0.7}">${d.c}</span>
+    <div class="hist-bar w-full" style="height:${Math.max(pct,2)}%;background:${color};min-height:4px" title="${d.r}: ${d.c} employees"></div>
+  `;
+  histEl.appendChild(col);
+
+  const lbl = document.createElement('div');
+  lbl.className = 'hist-label text-center flex-1';
+  lbl.innerHTML = `<span class="text-xs text-[var(--muted-foreground)]" style="writing-mode:vertical-lr;font-size:10px">${d.r}</span>`;
+  labelsEl.appendChild(lbl);
+});
+
+// ===== HORIZONTAL BAR BUILDER =====
+function buildBars(containerId, data, labelKey, valueKey, maxVal, colorFn, formatFn) {
+  const el = document.getElementById(containerId);
+  data.forEach((d, i) => {
+    const pct = (d[valueKey] / maxVal * 100).toFixed(1);
+    const color = typeof colorFn === 'function' ? colorFn(d, i) : (d.cl || colorFn);
+    const row = document.createElement('div');
+    row.className = 'bar-row rounded-lg px-3 py-2 -mx-3 transition-colors';
+    row.innerHTML = `
+      <div class="flex justify-between items-center mb-1.5">
+        <span class="text-sm font-medium text-[var(--foreground)]">${d[labelKey]}</span>
+        <span class="text-sm font-bold text-[var(--foreground)]">${formatFn(d[valueKey])}</span>
+      </div>
+      <div class="w-full bg-[var(--border)] rounded-full h-2.5 overflow-hidden">
+        <div class="bar-fill h-2.5 rounded-full" style="width:${pct}%;background:${color}"></div>
+      </div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+// Department bars
+const deptMax = Math.max(...DEPTS.map(d=>d.s));
+buildBars('deptBars', DEPTS, 'n', 's', deptMax, (d)=>d.cl, fmt);
+
+// Role bars
+const roleMax = JOBS[0].s;
+const roleColors = ['#4f46e5','#6366f1','#7c3aed','#8b5cf6','#a78bfa','#6d28d9','#2563eb','#3b82f6','#0ea5e9','#059669','#10b981','#f59e0b','#ef4444'];
+buildBars('roleBars', JOBS, 't', 's', roleMax, (_,i)=>roleColors[i], fmtK);
+
+// Education bars
+const eduMax = Math.max(...EDUS.map(d=>d.s));
+buildBars('eduBars', EDUS, 'n', 's', eduMax, (d)=>d.cl, fmt);
+
+// Experience bars
+const expMax = Math.max(...EXP.map(d=>d.s));
+const expColors = EXP.map((_,i) => `hsl(${210 + i*8}, 70%, ${50 + i*2}%)`);
+buildBars('expBars', EXP, 'b', 's', expMax, (_,i)=>expColors[i], fmtK);
+
+// ===== SVG DONUT =====
+function drawDonut(svgId, data, nameKey, valKey) {
+  const svg = document.getElementById(svgId);
+  const cx = 120, cy = 110, r = 80, inner = 50;
+  const total = data.reduce((a, d) => a + d[valKey], 0);
+  let angle = -Math.PI / 2;
+
+  data.forEach((d, i) => {
+    const slice = (d[valKey] / total) * Math.PI * 2;
+    const x1 = cx + r * Math.cos(angle);
+    const y1 = cy + r * Math.sin(angle);
+    const x2 = cx + r * Math.cos(angle + slice);
+    const y2 = cy + r * Math.sin(angle + slice);
+    const ix1 = cx + inner * Math.cos(angle + slice);
+    const iy1 = cy + inner * Math.sin(angle + slice);
+    const ix2 = cx + inner * Math.cos(angle);
+    const iy2 = cy + inner * Math.sin(angle);
+    const large = slice > Math.PI ? 1 : 0;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', `M${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} L${ix1},${iy1} A${inner},${inner} 0 ${large} 0 ${ix2},${iy2} Z`);
+    path.setAttribute('fill', d.cl);
+    path.setAttribute('class', 'donut-slice');
+    path.setAttribute('opacity', '0.85');
+
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+    title.textContent = `${d[nameKey]}: ${d[valKey].toLocaleString()} (${(d[valKey]/total*100).toFixed(1)}%)`;
+    path.appendChild(title);
+    svg.appendChild(path);
+    angle += slice;
+  });
+
+  // Center text
+  const t1 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  t1.setAttribute('x', cx); t1.setAttribute('y', cy - 4);
+  t1.setAttribute('text-anchor', 'middle'); t1.setAttribute('font-size', '18');
+  t1.setAttribute('font-weight', 'bold'); t1.setAttribute('fill', 'var(--foreground)');
+  t1.textContent = total.toLocaleString();
+  svg.appendChild(t1);
+  const t2 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  t2.setAttribute('x', cx); t2.setAttribute('y', cy + 14);
+  t2.setAttribute('text-anchor', 'middle'); t2.setAttribute('font-size', '11');
+  t2.setAttribute('fill', 'var(--muted-foreground)');
+  t2.textContent = 'employees';
+  svg.appendChild(t2);
+
+  // Legend
+  data.forEach((d, i) => {
+    const ly = 20 + i * 22;
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', 215); rect.setAttribute('y', ly);
+    rect.setAttribute('width', 10); rect.setAttribute('height', 10);
+    rect.setAttribute('rx', 3); rect.setAttribute('fill', d.cl);
+    svg.appendChild(rect);
+    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    txt.setAttribute('x', 230); txt.setAttribute('y', ly + 9);
+    txt.setAttribute('font-size', '11'); txt.setAttribute('fill', 'var(--muted-foreground)');
+    txt.textContent = `${d[nameKey]}`;
+    svg.appendChild(txt);
+  });
+}
+
+drawDonut('deptDonut', DEPTS, 'n', 'c');
+drawDonut('eduDonut', EDUS, 'n', 'c');
+
+// ===== ROLES TABLE =====
+const tableEl = document.getElementById('rolesTable');
+JOBS.forEach((j, i) => {
+  const pct = (j.s / roleMax * 100).toFixed(0);
+  const tr = document.createElement('tr');
+  tr.className = 'border-b border-[var(--border)] transition-colors hover:bg-[var(--accent)]';
+  tr.innerHTML = `
+    <td class="py-3 text-[var(--muted-foreground)] font-mono text-xs w-8">${i+1}</td>
+    <td class="py-3 text-[var(--foreground)] font-medium">${j.t}</td>
+    <td class="py-3 text-right text-[var(--muted-foreground)] tabular-nums">${j.c}</td>
+    <td class="py-3 text-right font-bold text-[var(--foreground)] tabular-nums">${fmtK(j.s)}</td>
+    <td class="py-3 pl-5">
+      <div class="w-full bg-[var(--border)] rounded-full h-2 overflow-hidden">
+        <div class="h-2 rounded-full bar-fill" style="width:${pct}%;background:${roleColors[i]}"></div>
+      </div>
+    </td>
+  `;
+  tableEl.appendChild(tr);
+});
+
+// ===== TAB SWITCHING =====
+document.getElementById('tabBar').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+  const panel = document.getElementById('tab-' + btn.dataset.tab);
+  if (panel) { panel.classList.remove('hidden'); panel.classList.add('fade'); }
+});
+</script>
+
+</body>
+</html>
